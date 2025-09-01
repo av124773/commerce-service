@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,10 +44,11 @@ public class User {
     private boolean hasNewsletter;
     @Column(name = "last_seem_at")
     private LocalDateTime lastsSeemAt;
+    @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     @Column(name = "deleted_at")
     private LocalDateTime deleteAt;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<UserSegment> userSegments;
 }

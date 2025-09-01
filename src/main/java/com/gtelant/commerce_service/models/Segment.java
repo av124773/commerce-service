@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.List;
 
@@ -18,10 +19,11 @@ public class Segment {
     private int id;
     @Column(name = "name")
     private String name;
+    @CreationTimestamp
     @Column(name = "created_at")
     private String createdAt;
     @Column(name = "deleted_at")
     private String deletedAt;
-    @OneToMany(mappedBy = "segment")
+    @OneToMany(mappedBy = "segment", fetch = FetchType.LAZY)
     private List<UserSegment> userSegments;
 }
