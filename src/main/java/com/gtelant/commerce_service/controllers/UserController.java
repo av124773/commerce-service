@@ -10,15 +10,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import com.gtelant.commerce_service.requests.CreateUserRequest;
 import com.gtelant.commerce_service.requests.UpdateUserRequest;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +35,18 @@ public class UserController {
         List<User> users = userRepository.findAll();
         return ResponseEntity.ok(users.stream().map(GetUserResponse::new).toList());
     }
+
+//    @Operation(summary = "取得所有使用者列表(分頁)",
+//            description = "")
+//    @GetMapping("/page")
+//    public Page<GetUserResponse> getAllUsersPage(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size
+//    ) {
+//        PageRequest pageRequest = PageRequest.of(page, size);
+//        Page<User> users = userRepository.findAll(pageRequest);
+//        return ;
+//    }
 
     @Operation(summary = "取得指定使用者資料", 
             description = "")
@@ -95,5 +102,11 @@ public class UserController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping("/{id}/segments/{segmentId}")
+    public ResponseEntity<Void> assignSegmentToUser(@PathVariable int id, @PathVariable int segmentId) {
+        // todo
+        return ResponseEntity.ok().build();
     }
 }
