@@ -2,6 +2,7 @@ package com.gtelant.commerce_service.mappers;
 
 import org.springframework.stereotype.Component;
 
+import com.gtelant.commerce_service.dtos.UserRequest;
 import com.gtelant.commerce_service.dtos.UserResponse;
 import com.gtelant.commerce_service.models.User;
 
@@ -27,6 +28,24 @@ public class UserMapper {
         response.setUserSegments(user.getUserSegments());
 
         return response;
+    }
+
+    public User toEntity(UserRequest request) {
+        User user = new User();
+
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setEmail(request.getEmail());
+        user.setBirthday(request.getBirthday());
+        user.setAddress(request.getAddress());
+        user.setCity(request.getCity());
+        user.setState(request.getState());
+        user.setZipcode(request.getZipcode());
+        user.setRole(request.getRole());
+        user.setPassword(request.getPassword());
+        user.setHasNewsletter(request.isHasNewsletter());
+
+        return user;
     }
 
 

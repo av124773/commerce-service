@@ -1,5 +1,6 @@
 package com.gtelant.commerce_service.controllers;
 
+import com.gtelant.commerce_service.dtos.UserRequest;
 import com.gtelant.commerce_service.dtos.UserResponse;
 import com.gtelant.commerce_service.mappers.UserMapper;
 import com.gtelant.commerce_service.models.User;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
+
     @Autowired
     public UserController(UserService userService, UserMapper userMapper) {
         this.userService = userService;
@@ -62,26 +64,14 @@ public class UserController {
         }
     }
 
-    // @Operation(summary = "新增使用者", 
-    //         description = "")
-    // @PostMapping()
-    // public ResponseEntity<GetUserResponse> createUser(@RequestBody CreateUserRequest request) {
-    //     User user = new User();
-    //     user.setFirstName(request.getFirstName());
-    //     user.setLastName(request.getLastName());
-    //     user.setEmail(request.getEmail());
-    //     user.setBirthday(java.time.LocalDate.parse(request.getBirthday()));
-    //     user.setAddress(request.getAddress());
-    //     user.setCity(request.getCity());
-    //     user.setState(request.getState());
-    //     user.setZipcode(request.getZipcode());
-    //     user.setPassword(request.getPassword());
-    //     user.setRole(request.getRole());
-    //     user.setHasNewsletter(request.isHasNewsletter());
-    //     User savedUser = userRepository.save(user);
-    //     return ResponseEntity.ok(new GetUserResponse(savedUser));
-
-    // }
+    @Operation(summary = "新增使用者", 
+            description = "")
+    @PostMapping()
+    public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest request) {
+        User user = userMapper.toEntity(request);
+        User savedUser = userService.createUser(user);
+        return ResponseEntity.ok(userMapper.toResponse(savedUser));
+    }
 
     // @PutMapping("/{id}")
     // public ResponseEntity<UpdateUserResponse> updateUser(@PathVariable int id, @RequestBody UpdateUserRequest request) {
