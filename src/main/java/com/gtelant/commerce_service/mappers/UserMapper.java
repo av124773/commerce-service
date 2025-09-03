@@ -1,5 +1,7 @@
 package com.gtelant.commerce_service.mappers;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Component;
 
 import com.gtelant.commerce_service.dtos.UserRequest;
@@ -44,6 +46,41 @@ public class UserMapper {
         user.setRole(request.getRole());
         user.setPassword(request.getPassword());
         user.setHasNewsletter(request.isHasNewsletter());
+
+        return user;
+    }
+
+    public User updateEntity(User user, UserRequest request) {
+        if (request.getFirstName() != null) {
+            user.setFirstName(request.getFirstName());
+        }
+        if (request.getLastName() != null) {
+            user.setLastName(request.getLastName());
+        }
+        if (request.getEmail() != null) {
+            user.setEmail(request.getEmail());
+        }
+        if (request.getBirthday() != null) {
+            user.setBirthday(request.getBirthday());
+        }
+        if (request.getAddress() != null) {
+            user.setAddress(request.getAddress());
+        }
+        if (request.getCity() != null) {
+            user.setCity(request.getCity());
+        }
+        if (request.getState() != null) {
+            user.setState(request.getState());
+        }
+        if (request.getZipcode() != null) {
+            user.setZipcode(request.getZipcode());
+        }
+        if (request.getPassword() != null) {
+            user.setPassword(request.getPassword());
+        }
+        if (request.isHasNewsletter() != user.isHasNewsletter()) {
+            user.setHasNewsletter(request.isHasNewsletter());
+        }
 
         return user;
     }

@@ -32,17 +32,11 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    
-    public User createUser(User user) {
+    public User saveUser(User user) {
         return userRepository.save(user);
     }
 
-// todo
-//    public User updateUser() {
-//
-//    }
-//
-//    public User deleteUser() {
-//
-//    }
+    // public User deleteUser() {
+
+    // }
 }
