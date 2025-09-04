@@ -38,7 +38,7 @@ public class SegmentContorller {
 
     @Operation(summary = "取得所有Segment列表", description = "")
     @GetMapping
-    public ResponseEntity<List<SegmentResponse>> getAllUsers() {
+    public ResponseEntity<List<SegmentResponse>> getAllSegments() {
         List<Segment> segments = segmentService.getAllSegments();
         List<SegmentResponse> response = segments.stream()
                 .map(segmentMapper::toResponse)
@@ -68,7 +68,7 @@ public class SegmentContorller {
 
     @Operation(summary = "刪除指定Segment", description = "")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
+    public ResponseEntity<Void> deleteSegment(@PathVariable int id) {
         Optional<Segment> segment = segmentService.getSegmentById(id);
         if (segment.isPresent()) {
             segmentService.deleteSegment(id);
