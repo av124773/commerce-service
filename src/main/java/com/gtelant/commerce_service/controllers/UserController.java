@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -115,6 +116,17 @@ public class UserController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @Operation(summary = "刪除指定使用者", description = "")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
+        Optional<User> user = userService.getUserById(id);
+        if (user.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 
     // @PostMapping("/{id}/segments/{segmentId}")
