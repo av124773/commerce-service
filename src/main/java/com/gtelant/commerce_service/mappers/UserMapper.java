@@ -1,10 +1,14 @@
 package com.gtelant.commerce_service.mappers;
 
+import com.gtelant.commerce_service.dtos.UserSegmentResponse;
+import com.gtelant.commerce_service.models.UserSegment;
 import org.springframework.stereotype.Component;
 
 import com.gtelant.commerce_service.dtos.UserRequest;
 import com.gtelant.commerce_service.dtos.UserResponse;
 import com.gtelant.commerce_service.models.User;
+
+import java.util.stream.Collectors;
 
 @Component
 public class UserMapper {
@@ -25,9 +29,23 @@ public class UserMapper {
         response.setLastsSeemAt(user.getLastsSeemAt());
         response.setCreatedAt(user.getCreatedAt());
         response.setDeleteAt(user.getDeleteAt());
-        response.setUserSegments(user.getUserSegments());
+        if (user.getUserSegments() != null) {
+            response.setUserSegments(user.getUserSegments().stream()
+                    .map(this::toUserSegmentResponse)
+                    .collect(Collectors.toList()));
+        }
 
         return response;
+    }
+
+    public UserSegmentResponse toUserSegmentResponse(UserSegment userSegment) {
+        UserSegmentResponse dto = new UserSegmentResponse();
+        dto.setId(userSegment.getId());
+        dto.setUserId(userSegment.getUser().getId());
+        dto.setSegmentId(userSegment.getSegment().getId());
+        dto.setName(userSegment.getSegment().getName());
+        dto.setCreatedAt(userSegment.getCreatedAt());
+        return dto;
     }
 
     public User toEntity(UserRequest request) {

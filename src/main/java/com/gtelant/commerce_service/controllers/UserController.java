@@ -64,10 +64,11 @@ public class UserController {
     @GetMapping("/page")
     public Page<UserResponse> getAllUsersPage(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "") String query
     ) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<User> users = userService.getAllUsers(pageRequest);
+        Page<User> users = userService.getAllUsers(query, pageRequest);
         Page<UserResponse> response = users.map(userMapper::toResponse);
         return ResponseEntity.ok(response).getBody();
     }

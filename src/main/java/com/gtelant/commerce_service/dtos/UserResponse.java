@@ -22,5 +22,5 @@ public class UserResponse {
     private LocalDateTime lastsSeemAt;
     private LocalDateTime createdAt;
     private LocalDateTime deleteAt;
-    private List<UserSegment> userSegments;
+    private List<UserSegmentResponse> userSegments;
 }
