@@ -1,99 +1,154 @@
 package com.gtelant.commerce_service.controllers;
 
-import com.gtelant.commerce_service.models.User;
-import com.gtelant.commerce_service.repositories.UserRepository;
-import com.gtelant.commerce_service.responses.GetUserResponse;
-import com.gtelant.commerce_service.responses.UpdateUserResponse;
+import java.util.List;
+import java.util.Optional;
 
-import io.swagger.v3.oas.annotations.Operation;
-
-import com.gtelant.commerce_service.requests.CreateUserRequest;
-import com.gtelant.commerce_service.requests.UpdateUserRequest;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Optional;
+import com.gtelant.commerce_service.dtos.UserRequest;
+import com.gtelant.commerce_service.dtos.UserResponse;
+import com.gtelant.commerce_service.mappers.UserMapper;
+import com.gtelant.commerce_service.mappers.UserSegmentMapper;
+import com.gtelant.commerce_service.models.Segment;
+import com.gtelant.commerce_service.models.User;
+import com.gtelant.commerce_service.models.UserSegment;
+import com.gtelant.commerce_service.services.SegmentService;
+import com.gtelant.commerce_service.services.UserSegmentService;
+import com.gtelant.commerce_service.services.UserService;
+
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/users")
 @CrossOrigin("*")
 public class UserController {
-    private final UserRepository userRepository;
+    private final UserService userService;
+    private final UserMapper userMapper;
+    private final SegmentService segmentService;
+    private final UserSegmentMapper userSegmentMapper;
+    private final UserSegmentService userSegmentService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    @Autowired
+    public UserController(UserService userService, UserMapper userMapper, SegmentService segmentService, UserSegmentMapper userSegmentMapper, UserSegmentService userSegmentService) {
+        this.userService = userService;
+        this.userMapper = userMapper;
+        this.segmentService = segmentService;
+        this.userSegmentMapper = userSegmentMapper;
+        this.userSegmentService = userSegmentService;
     }
 
-    @Operation(summary = "取得所有使用者列表", 
-            description = "")
+    @Operation(summary = "取得所有使用者列表", description = "")
     @GetMapping
-    public ResponseEntity<List<GetUserResponse>> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        return ResponseEntity.ok(users.stream().map(GetUserResponse::new).toList());
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        List<UserResponse> response = users.stream()
+                .map(userMapper::toResponse)
+                .toList();
+        return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "取得指定使用者資料", 
-            description = "")
+    @Operation(summary = "取得所有使用者列表(分頁)", description = "")
+    @GetMapping("/page")
+    public Page<UserResponse> getAllUsersPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<User> users = userService.getAllUsers(pageRequest);
+        Page<UserResponse> response = users.map(userMapper::toResponse);
+        return ResponseEntity.ok(response).getBody();
+    }
+
+    @Operation(summary = "取得指定使用者資料", description = "")
     @GetMapping("/{id}")
-    public ResponseEntity<GetUserResponse> getUserById(@PathVariable int id) {
-        Optional<User> user = userRepository.findById(id);
+    public ResponseEntity<UserResponse> getUserById(@PathVariable int id) {
+        Optional<User> user = userService.getUserById(id);
         if (user.isPresent()) {
-            GetUserResponse response = new GetUserResponse(user.get());
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(userMapper.toResponse(user.get()));
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    @Operation(summary = "新增使用者", 
-            description = "")
+
+    @Operation(summary = "新增使用者", description = "")
     @PostMapping()
-    public ResponseEntity<GetUserResponse> createUser(@RequestBody CreateUserRequest request) {
-        User user = new User();
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setEmail(request.getEmail());
-        user.setBirthday(java.time.LocalDate.parse(request.getBirthday()));
-        user.setAddress(request.getAddress());
-        user.setCity(request.getCity());
-        user.setState(request.getState());
-        user.setZipcode(request.getZipcode());
-        user.setPassword(request.getPassword());
-        user.setRole(request.getRole());
-        user.setHasNewsletter(request.isHasNewsletter());
-        User savedUser = userRepository.save(user);
-        return ResponseEntity.ok(new GetUserResponse(savedUser));
-
+    public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest request) {
+        User user = userMapper.toEntity(request);
+        User savedUser = userService.saveUser(user);
+        return ResponseEntity.ok(userMapper.toResponse(savedUser));
     }
 
+    @Operation(summary = "更新指定使用者資料", 
+            description = """
+                    請求範例：
+                    ```json
+                    {
+                        "firstName": null,
+                        "lastName": null,
+                        "email": null,
+                        "birthday": null,
+                        "address": "new address",
+                        "city": null,
+                        "state": null,
+                        "zipcode": null,
+                        "role": null,
+                        "password": null,
+                        "hasNewsletter": null
+                    }
+                    ```
+                    
+                    說明：
+                    - null 表示該欄位不更新
+                    - 有值則更新為新的值
+                    - hasNewsletter 為 boolean 型別，預設為 false
+                    """
+    )
     @PutMapping("/{id}")
-    public ResponseEntity<UpdateUserResponse> updateUser(@PathVariable int id, @RequestBody UpdateUserRequest request) {
-        Optional<User> user = userRepository.findById(id);
+    public ResponseEntity<UserResponse> updateUser(@PathVariable int id, @RequestBody UserRequest request) {
+        Optional<User> user = userService.getUserById(id);
         if (user.isPresent()) {
-            User updatedUser = user.get();
-            updatedUser.setFirstName(request.getFirstName());
-            updatedUser.setLastName(request.getLastName());
-            updatedUser.setBirthday(java.time.LocalDate.parse(request.getBirthday()));
-            updatedUser.setAddress(request.getAddress());
-            updatedUser.setCity(request.getCity());
-            updatedUser.setState(request.getState());
-            updatedUser.setZipcode(request.getZipcode());
-            updatedUser.setHasNewsletter(request.isHasNewsletter());
-
-            User savedUser = userRepository.save(updatedUser);
-            UpdateUserResponse response = new UpdateUserResponse(savedUser);
-            return ResponseEntity.ok(response);
+            User updatedUser = userMapper.updateEntity(user.get(), request);
+            User savedUser = userService.saveUser(updatedUser);
+            return ResponseEntity.ok(userMapper.toResponse(savedUser));
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @Operation(summary = "刪除指定使用者", description = "")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
+        Optional<User> user = userService.getUserById(id);
+        if (user.isPresent()) {
+            userService.deleteUser(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/{id}/segments/{segmentId}")
+    public ResponseEntity<Void> assignSegmentToUser(@PathVariable int id, @PathVariable int segmentId) {
+        Optional<User> user = userService.getUserById(id);
+        Optional<Segment> segment = segmentService.getSegmentById(segmentId);
+        if (user.isPresent() && segment.isPresent()) {
+            UserSegment usersegment = userSegmentMapper.toEntity(user.get(), segment.get());
+            UserSegment savedUserSegment = userSegmentService.saveUserSegment(usersegment);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }
