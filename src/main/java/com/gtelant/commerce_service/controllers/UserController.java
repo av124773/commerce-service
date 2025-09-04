@@ -122,11 +122,11 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable int id) {
         Optional<User> user = userService.getUserById(id);
-        if (user.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        if (user.isPresent()) {
+            userService.deleteUser(id);
+            return ResponseEntity.noContent().build();
         }
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.notFound().build();
     }
 
     // @PostMapping("/{id}/segments/{segmentId}")

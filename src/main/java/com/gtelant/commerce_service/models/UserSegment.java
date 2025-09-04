@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
@@ -23,7 +26,7 @@ public class UserSegment {
     private Segment segment;
     @CreationTimestamp
     @Column(name = "created_at")
-    private String createdAt;
+    private LocalDateTime createdAt;
     @Column(name = "deleted_at")
-    private String deletedAt;
+    private LocalDateTime deletedAt;
 }

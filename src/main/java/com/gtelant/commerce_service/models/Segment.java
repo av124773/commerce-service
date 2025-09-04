@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -21,9 +22,9 @@ public class Segment {
     private String name;
     @CreationTimestamp
     @Column(name = "created_at")
-    private String createdAt;
+    private LocalDateTime createdAt;
     @Column(name = "deleted_at")
-    private String deletedAt;
+    private LocalDateTime deletedAt;
     @OneToMany(mappedBy = "segment", fetch = FetchType.LAZY)
     private List<UserSegment> userSegments;
 }

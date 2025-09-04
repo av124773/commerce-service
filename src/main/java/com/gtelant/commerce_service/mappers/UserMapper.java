@@ -1,7 +1,5 @@
 package com.gtelant.commerce_service.mappers;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Component;
 
 import com.gtelant.commerce_service.dtos.UserRequest;
