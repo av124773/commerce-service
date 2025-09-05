@@ -21,12 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gtelant.commerce_service.dtos.UserRequest;
 import com.gtelant.commerce_service.dtos.UserResponse;
 import com.gtelant.commerce_service.mappers.UserMapper;
-import com.gtelant.commerce_service.mappers.UserSegmentMapper;
-import com.gtelant.commerce_service.models.Segment;
 import com.gtelant.commerce_service.models.User;
-import com.gtelant.commerce_service.models.UserSegment;
-import com.gtelant.commerce_service.services.SegmentService;
-import com.gtelant.commerce_service.services.UserSegmentService;
 import com.gtelant.commerce_service.services.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,17 +32,11 @@ import io.swagger.v3.oas.annotations.Operation;
 public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
-    private final SegmentService segmentService;
-    private final UserSegmentMapper userSegmentMapper;
-    private final UserSegmentService userSegmentService;
 
     @Autowired
-    public UserController(UserService userService, UserMapper userMapper, SegmentService segmentService, UserSegmentMapper userSegmentMapper, UserSegmentService userSegmentService) {
+    public UserController(UserService userService, UserMapper userMapper) {
         this.userService = userService;
         this.userMapper = userMapper;
-        this.segmentService = segmentService;
-        this.userSegmentMapper = userSegmentMapper;
-        this.userSegmentService = userSegmentService;
     }
 
     @Operation(summary = "取得所有使用者列表", description = "")
@@ -64,10 +53,13 @@ public class UserController {
     @GetMapping("/page")
     public Page<UserResponse> getAllUsersPage(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "") String userName,
+            @RequestParam(defaultValue = "") boolean hasNewsletter,
+            @RequestParam(defaultValue = "") int segmentId
     ) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<User> users = userService.getAllUsers(pageRequest);
+        Page<User> users = userService.getAllUsers(segmentId, userName, pageRequest);
         Page<UserResponse> response = users.map(userMapper::toResponse);
         return ResponseEntity.ok(response).getBody();
     }
@@ -142,11 +134,7 @@ public class UserController {
 
     @PostMapping("/{id}/segments/{segmentId}")
     public ResponseEntity<Void> assignSegmentToUser(@PathVariable int id, @PathVariable int segmentId) {
-        Optional<User> user = userService.getUserById(id);
-        Optional<Segment> segment = segmentService.getSegmentById(segmentId);
-        if (user.isPresent() && segment.isPresent()) {
-            UserSegment usersegment = userSegmentMapper.toEntity(user.get(), segment.get());
-            UserSegment savedUserSegment = userSegmentService.saveUserSegment(usersegment);
+        if (userService.assignSegmentToUser(id, segmentId)) {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();

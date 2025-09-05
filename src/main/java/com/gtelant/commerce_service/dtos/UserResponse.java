@@ -1,6 +1,5 @@
 package com.gtelant.commerce_service.dtos;
 
-import com.gtelant.commerce_service.models.UserSegment;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -22,5 +21,5 @@ public class UserResponse {
     private LocalDateTime lastsSeemAt;
     private LocalDateTime createdAt;
     private LocalDateTime deleteAt;
-    private List<UserSegment> userSegments;
+    private List<UserSegmentResponse> userSegments;
 }
