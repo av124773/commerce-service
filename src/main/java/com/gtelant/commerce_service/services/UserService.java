@@ -32,9 +32,18 @@ public class UserService {
         return userRepository.findAll();
     }
     
-    public Page<User> getAllUsers(String query, PageRequest pageRequest) {
-        if (query != null && !query.isEmpty()) {
-            return userRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(query, query, pageRequest);
+    public Page<User> getAllUsers(String userName, PageRequest pageRequest) {
+        if (userName != null && !userName.isEmpty()) {
+            return userRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(userName, userName, pageRequest);
+        }
+        return userRepository.findAll(pageRequest);
+    }
+    
+    public Page<User> getAllUsers(int segmentId, String userName, PageRequest pageRequest) {
+        if (userName != null && !userName.isEmpty()) {
+            return userRepository.findByUserSegments_Segment_IdAndFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(
+                segmentId, userName, userName, pageRequest
+            );
         }
         return userRepository.findAll(pageRequest);
     }

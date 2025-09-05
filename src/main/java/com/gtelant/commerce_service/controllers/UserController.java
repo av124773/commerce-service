@@ -54,10 +54,12 @@ public class UserController {
     public Page<UserResponse> getAllUsersPage(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "") String query
+            @RequestParam(defaultValue = "") String userName,
+            @RequestParam(defaultValue = "") boolean hasNewsletter,
+            @RequestParam(defaultValue = "") int segmentId
     ) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<User> users = userService.getAllUsers(query, pageRequest);
+        Page<User> users = userService.getAllUsers(segmentId, userName, pageRequest);
         Page<UserResponse> response = users.map(userMapper::toResponse);
         return ResponseEntity.ok(response).getBody();
     }
