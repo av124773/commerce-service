@@ -34,7 +34,7 @@ public class UserService {
     
     public Page<User> getAllUsers(String query, PageRequest pageRequest) {
         if (query != null && !query.isEmpty()) {
-            return userRepository.findByFirstNameContainingIgnoreCase(query, pageRequest);
+            return userRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(query, query, pageRequest);
         }
         return userRepository.findAll(pageRequest);
     }
