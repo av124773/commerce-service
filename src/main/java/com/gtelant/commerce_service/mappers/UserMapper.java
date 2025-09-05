@@ -14,28 +14,26 @@ import java.util.stream.Collectors;
 public class UserMapper {
     
     public UserResponse toResponse(User user) {
-        UserResponse response = new UserResponse();
-
-        response.setFirstName(user.getFirstName());
-        response.setLastName(user.getLastName());
-        response.setEmail(user.getEmail());
-        response.setAddress(user.getAddress());
-        response.setBirthday(user.getBirthday());
-        response.setCity(user.getCity());
-        response.setState(user.getState());
-        response.setZipcode(user.getZipcode());
-        response.setRole(user.getRole());
-        response.setHasNewsletter(user.isHasNewsletter());
-        response.setLastsSeemAt(user.getLastsSeemAt());
-        response.setCreatedAt(user.getCreatedAt());
-        response.setDeleteAt(user.getDeleteAt());
+        UserResponse dto = new UserResponse();
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
+        dto.setEmail(user.getEmail());
+        dto.setAddress(user.getAddress());
+        dto.setBirthday(user.getBirthday());
+        dto.setCity(user.getCity());
+        dto.setState(user.getState());
+        dto.setZipcode(user.getZipcode());
+        dto.setRole(user.getRole());
+        dto.setHasNewsletter(user.isHasNewsletter());
+        dto.setLastsSeemAt(user.getLastsSeemAt());
+        dto.setCreatedAt(user.getCreatedAt());
+        dto.setDeleteAt(user.getDeleteAt());
         if (user.getUserSegments() != null) {
-            response.setUserSegments(user.getUserSegments().stream()
+            dto.setUserSegments(user.getUserSegments().stream()
                     .map(this::toUserSegmentResponse)
                     .collect(Collectors.toList()));
         }
-
-        return response;
+        return dto;
     }
 
     public UserSegmentResponse toUserSegmentResponse(UserSegment userSegment) {
@@ -49,21 +47,19 @@ public class UserMapper {
     }
 
     public User toEntity(UserRequest request) {
-        User user = new User();
-
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setEmail(request.getEmail());
-        user.setBirthday(request.getBirthday());
-        user.setAddress(request.getAddress());
-        user.setCity(request.getCity());
-        user.setState(request.getState());
-        user.setZipcode(request.getZipcode());
-        user.setRole(request.getRole());
-        user.setPassword(request.getPassword());
-        user.setHasNewsletter(request.isHasNewsletter());
-
-        return user;
+        User dto = new User();
+        dto.setFirstName(request.getFirstName());
+        dto.setLastName(request.getLastName());
+        dto.setEmail(request.getEmail());
+        dto.setBirthday(request.getBirthday());
+        dto.setAddress(request.getAddress());
+        dto.setCity(request.getCity());
+        dto.setState(request.getState());
+        dto.setZipcode(request.getZipcode());
+        dto.setRole(request.getRole());
+        dto.setPassword(request.getPassword());
+        dto.setHasNewsletter(request.isHasNewsletter());
+        return dto;
     }
 
     public User updateEntity(User user, UserRequest request) {
@@ -97,9 +93,6 @@ public class UserMapper {
         if (request.isHasNewsletter() != user.isHasNewsletter()) {
             user.setHasNewsletter(request.isHasNewsletter());
         }
-
         return user;
     }
-
-
 }
