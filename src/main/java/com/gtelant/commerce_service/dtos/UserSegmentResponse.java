@@ -2,9 +2,6 @@ package com.gtelant.commerce_service.dtos;
 
 import java.time.LocalDateTime;
 
-import com.gtelant.commerce_service.models.Segment;
-import com.gtelant.commerce_service.models.User;
-
 import lombok.Data;
 
 @Data

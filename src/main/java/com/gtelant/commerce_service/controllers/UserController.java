@@ -21,12 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gtelant.commerce_service.dtos.UserRequest;
 import com.gtelant.commerce_service.dtos.UserResponse;
 import com.gtelant.commerce_service.mappers.UserMapper;
-import com.gtelant.commerce_service.mappers.UserSegmentMapper;
-import com.gtelant.commerce_service.models.Segment;
 import com.gtelant.commerce_service.models.User;
-import com.gtelant.commerce_service.models.UserSegment;
-import com.gtelant.commerce_service.services.SegmentService;
-import com.gtelant.commerce_service.services.UserSegmentService;
 import com.gtelant.commerce_service.services.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,17 +32,11 @@ import io.swagger.v3.oas.annotations.Operation;
 public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
-    private final SegmentService segmentService;
-    private final UserSegmentMapper userSegmentMapper;
-    private final UserSegmentService userSegmentService;
 
     @Autowired
-    public UserController(UserService userService, UserMapper userMapper, SegmentService segmentService, UserSegmentMapper userSegmentMapper, UserSegmentService userSegmentService) {
+    public UserController(UserService userService, UserMapper userMapper) {
         this.userService = userService;
         this.userMapper = userMapper;
-        this.segmentService = segmentService;
-        this.userSegmentMapper = userSegmentMapper;
-        this.userSegmentService = userSegmentService;
     }
 
     @Operation(summary = "取得所有使用者列表", description = "")
