@@ -51,7 +51,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public void assignSegmentToUser(int id, int segmentId) {
+    public boolean assignSegmentToUser(int id, int segmentId) {
         Optional<User> user = userRepository.findById(id);
         Optional<Segment> segment = segmentRepository.findById(segmentId);
         if (user.isPresent() && segment.isPresent()) {
@@ -59,7 +59,8 @@ public class UserService {
             userSegment.setSegment(segment.get());
             userSegment.setUser(user.get());
             userSegmentRepository.save(userSegment);
-
+            return true;
         }
+        return false;
     }
 }

@@ -143,11 +143,7 @@ public class UserController {
 
     @PostMapping("/{id}/segments/{segmentId}")
     public ResponseEntity<Void> assignSegmentToUser(@PathVariable int id, @PathVariable int segmentId) {
-        Optional<User> user = userService.getUserById(id);
-        Optional<Segment> segment = segmentService.getSegmentById(segmentId);
-        if (user.isPresent() && segment.isPresent()) {
-            UserSegment usersegment = userSegmentMapper.toEntity(user.get(), segment.get());
-            UserSegment savedUserSegment = userSegmentService.saveUserSegment(usersegment);
+        if (userService.assignSegmentToUser(id, segmentId)) {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
