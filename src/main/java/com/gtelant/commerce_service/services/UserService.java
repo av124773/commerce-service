@@ -6,12 +6,16 @@ import com.gtelant.commerce_service.models.UserSegment;
 import com.gtelant.commerce_service.repositories.SegmentRepository;
 import com.gtelant.commerce_service.repositories.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.gtelant.commerce_service.repositories.UserSegmentRepository;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 
@@ -32,20 +36,42 @@ public class UserService {
         return userRepository.findAll();
     }
     
-    public Page<User> getAllUsers(String userName, PageRequest pageRequest) {
-        if (userName != null && !userName.isEmpty()) {
-            return userRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(userName, userName, pageRequest);
+    public Page<User> getAllUsers(String queryName, PageRequest pageRequest) {
+        if (queryName != null && !queryName.isEmpty()) {
+            return userRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(queryName, queryName, pageRequest);
         }
         return userRepository.findAll(pageRequest);
     }
     
-    public Page<User> getAllUsers(int segmentId, String userName, PageRequest pageRequest) {
-        if (userName != null && !userName.isEmpty()) {
-            return userRepository.findByUserSegments_Segment_IdAndFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(
-                segmentId, userName, userName, pageRequest
-            );
-        }
-        return userRepository.findAll(pageRequest);
+    public Page<User> getAllUsers(String queryName, Boolean hasNewsletter, Integer segmentId, PageRequest pageRequest) {
+        Specification<User> spec = userSpecification(queryName, hasNewsletter, segmentId);
+        return userRepository.findAll(spec, pageRequest);
+    }
+
+    private Specification<User> userSpecification(String queryName, Boolean hasNewsletter, Integer segmentId) {
+        return ((root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (queryName != null && !queryName.isEmpty()) {
+                predicates.add(criteriaBuilder.or(
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("firstName")), "%" + queryName.toLowerCase() + "%"),
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("lastName")), "%" + queryName.toLowerCase() + "%")
+                ));
+            }
+
+            // todo: 如果寫 hasNewsletter != null 在 api 給空值的時候，疑似會直接被判定成 false 而不是 null
+            if (hasNewsletter != null) {
+                predicates.add(criteriaBuilder.equal(root.get("hasNewsletter"), hasNewsletter));
+            }
+
+            if (segmentId != null) {
+                Join<User, UserSegment> userUserSegmentJoin = root.join("userSegment");
+                predicates.add(criteriaBuilder.equal(userUserSegmentJoin.get("segment").get("id"), segmentId));
+            }
+
+            Predicate[] predicateArray = predicates.toArray(new Predicate[0]);
+            return criteriaBuilder.and(predicateArray);
+        });
     }
 
     public Optional<User> getUserById(int id) {
