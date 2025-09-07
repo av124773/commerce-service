@@ -55,7 +55,7 @@ public class UserController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "") String queryName,
-            @RequestParam(required = false) boolean hasNewsletter,
+            @RequestParam(required = false) Boolean hasNewsletter,
             @RequestParam(required = false) Integer segmentId
     ) {
         PageRequest pageRequest = PageRequest.of(page, size);
