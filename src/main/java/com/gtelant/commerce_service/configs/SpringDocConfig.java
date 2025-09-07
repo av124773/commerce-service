@@ -37,7 +37,8 @@ public class SpringDocConfig {
                 .pathsToMatch("/users/**",
                         "/segments/**",
                         "/user-segments/**",
-                        "/categories/**"
+                        "/categories/**",
+                        "/products/**"
                 )
                 .build();
     }

@@ -59,7 +59,6 @@ public class UserService {
                 ));
             }
 
-            // todo: 如果寫 hasNewsletter != null 在 api 給空值的時候，疑似會直接被判定成 false 而不是 null
             if (hasNewsletter != null) {
                 predicates.add(criteriaBuilder.equal(root.get("hasNewsletter"), hasNewsletter));
             }
