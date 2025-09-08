@@ -55,4 +55,15 @@ public class CategoryContorller {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @Operation(summary = "刪除指定Categories", description = "")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable int id) {
+        if (categoryService.getCategoryById(id).isPresent()) {
+            categoryService.deleteCategory(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+        
 }
