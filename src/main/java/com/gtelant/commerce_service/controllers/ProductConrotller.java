@@ -3,7 +3,7 @@ package com.gtelant.commerce_service.controllers;
 import com.gtelant.commerce_service.dtos.ProductRequest;
 import com.gtelant.commerce_service.dtos.ProductResponse;
 import com.gtelant.commerce_service.mappers.ProductMapper;
-import com.gtelant.commerce_service.repositories.ProductRepository;
+import com.gtelant.commerce_service.models.Product;
 import com.gtelant.commerce_service.services.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +33,12 @@ public class ProductConrotller {
         );
     }
 
-//    todo
-//    @Operation(summary = "建立新的Product", description = "")
-//    @PostMapping
-//    public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest request) {
-//
-//    }
+   
+    @Operation(summary = "建立新的Product", description = "")
+    @PostMapping
+    public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest request) {
+        Product product = productMapper.toEntity(request);
+        Product savedProduct = productService.saveProduct(product);
+        return ResponseEntity.ok(productMapper.toResponse(savedProduct));
+    }
 }

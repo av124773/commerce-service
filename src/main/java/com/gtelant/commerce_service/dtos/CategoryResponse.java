@@ -1,8 +1,6 @@
 package com.gtelant.commerce_service.dtos;
 
-import jakarta.persistence.Column;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 

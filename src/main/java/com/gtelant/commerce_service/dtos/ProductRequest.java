@@ -1,6 +1,5 @@
 package com.gtelant.commerce_service.dtos;
 
-import com.gtelant.commerce_service.models.Category;
 import lombok.Data;
 
 import java.math.BigDecimal;

@@ -2,13 +2,9 @@ package com.gtelant.commerce_service.controllers;
 
 import com.gtelant.commerce_service.dtos.CategoryRequest;
 import com.gtelant.commerce_service.dtos.CategoryResponse;
-import com.gtelant.commerce_service.dtos.UserRequest;
 import com.gtelant.commerce_service.mappers.CategoryMapper;
-import com.gtelant.commerce_service.mappers.UserMapper;
 import com.gtelant.commerce_service.models.Category;
-import com.gtelant.commerce_service.models.User;
 import com.gtelant.commerce_service.services.CategoryService;
-import com.gtelant.commerce_service.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +33,14 @@ public class CategoryContorller {
                 .map(categoryMapper::toResponse)
                 .toList()
         );
+    }
+
+    @Operation(summary = "建立新的Category", description = "")
+    @PostMapping
+    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest request) {
+        Category category = categoryMapper.toEntity(request);
+        Category savedCategory = categoryService.saveCategory(category);
+        return ResponseEntity.ok(categoryMapper.toResponse(savedCategory));
     }
 
     @Operation(summary = "更新指定Categories", description = "")

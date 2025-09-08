@@ -1,7 +1,6 @@
 package com.gtelant.commerce_service.dtos;
 
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
@@ -9,5 +8,4 @@ import java.time.LocalDateTime;
 public class CategoryRequest {
     private String name;
     private LocalDateTime lastUpdateAt;
-    private LocalDateTime deleteAt;
 }

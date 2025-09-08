@@ -3,15 +3,22 @@ package com.gtelant.commerce_service.mappers;
 import com.gtelant.commerce_service.dtos.CategoryResponse;
 import com.gtelant.commerce_service.dtos.ProductRequest;
 import com.gtelant.commerce_service.dtos.ProductResponse;
+import com.gtelant.commerce_service.models.Category;
 import com.gtelant.commerce_service.models.Product;
+import com.gtelant.commerce_service.services.CategoryService;
+
+import java.util.Optional;
+
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProductMapper {
     private final CategoryMapper categoryMapper;
+    private final CategoryService categoryService;
 
-    public ProductMapper(CategoryMapper categoryMapper) {
+    public ProductMapper(CategoryMapper categoryMapper, CategoryService categoryService) {
         this.categoryMapper = categoryMapper;
+        this.categoryService = categoryService;
     }
 
     public ProductResponse toResponse(Product product) {
@@ -34,19 +41,7 @@ public class ProductMapper {
 
         return dto;
     }
-    /*
-    private String reference;
-    private double width;
-    private double height;
-    private int categoryId;
-    private BigDecimal price;
-    private int stock;
-    private int sales;
-    private String description;
-    private String imageUrl;
-    private String thumbnailUrl;
-    private LocalDateTime lastUpdateAt;
-    * */
+
     public Product toEntity(ProductRequest request) {
         Product dto = new Product();
         dto.setReference(request.getReference());
@@ -60,8 +55,11 @@ public class ProductMapper {
         dto.setThumbnailUrl(request.getThumbnailUrl());
         dto.setLastUpdateAt(request.getLastUpdateAt());
 
-        // todo
-//        dto.setCategory();
+        Optional<Category> category = categoryService.getCategoryById(request.getCategoryId());
+        if (category.isPresent()) {
+            dto.setCategory(category.get());
+        }
+
         return dto;
     }
 }

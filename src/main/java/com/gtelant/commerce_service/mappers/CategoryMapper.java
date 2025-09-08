@@ -17,15 +17,19 @@ public class CategoryMapper {
         return dto;
     }
 
+    public Category toEntity(CategoryRequest request) {
+        Category dto = new Category();
+        dto.setName(request.getName());
+        dto.setLastUpdateAt(request.getLastUpdateAt());
+        return dto;
+    }
+
     public Category updateEntity(Category category, CategoryRequest request) {
         if (request.getName() != null) {
             category.setName(request.getName());
         }
         if (request.getLastUpdateAt() != null) {
             category.setLastUpdateAt(request.getLastUpdateAt());
-        }
-        if (request.getDeleteAt() != null) {
-            category.setDeleteAt(request.getDeleteAt());
         }
         return category;
     }
