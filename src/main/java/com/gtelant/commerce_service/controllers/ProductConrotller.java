@@ -7,10 +7,13 @@ import com.gtelant.commerce_service.models.Product;
 import com.gtelant.commerce_service.services.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/products")
@@ -31,6 +34,26 @@ public class ProductConrotller {
                 .map(productMapper::toResponse)
                 .toList()
         );
+    }
+
+    @Operation(summary = "取得所有Products列表(Page)", description = "")
+    @GetMapping("/page")
+    public Page<ProductResponse> getAllProductsPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return productService.getAllProducts(pageRequest).map(productMapper::toResponse);
+    }
+
+    @Operation(summary = "取得指定Product", description = "")
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable int id) {
+        Optional<Product> product = productService.getProductById(id);
+        if (product.isPresent()) {
+            return ResponseEntity.ok(productMapper.toResponse(product.get()));
+        }
+        return ResponseEntity.notFound().build();
     }
 
    

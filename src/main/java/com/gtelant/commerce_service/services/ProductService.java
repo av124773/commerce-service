@@ -2,6 +2,9 @@ package com.gtelant.commerce_service.services;
 
 import com.gtelant.commerce_service.models.Product;
 import com.gtelant.commerce_service.repositories.ProductRepository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +20,10 @@ public class ProductService {
 
     public List<Product> getAllProducts() {
         return productRepository.findAll();
+    }
+
+    public Page<Product> getAllProducts(PageRequest pageRequest) {
+        return productRepository.findAll(pageRequest);
     }
 
     public Optional<Product> getProductById(int id) {
