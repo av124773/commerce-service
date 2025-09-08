@@ -76,4 +76,15 @@ public class ProductConrotller {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @Operation(summary = "刪除指定Product", description = "")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable int id) {
+        Optional<Product> product = productService.getProductById(id);
+        if (product.isPresent()) {
+            productService.deleteProduct(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
