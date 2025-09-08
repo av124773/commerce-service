@@ -64,4 +64,16 @@ public class ProductConrotller {
         Product savedProduct = productService.saveProduct(product);
         return ResponseEntity.ok(productMapper.toResponse(savedProduct));
     }
+
+    @Operation(summary = "更新指定Product", description = "")
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable int id, @RequestBody ProductRequest request) {
+        Optional<Product> product = productService.getProductById(id);
+        if (product.isPresent()) {
+            Product updatedProduct = productMapper.updateEntity(product.get(), request);
+            Product savedProduct = productService.saveProduct(updatedProduct);
+            return ResponseEntity.ok(productMapper.toResponse(savedProduct));
+        }
+        return ResponseEntity.notFound().build();
+    }
 }

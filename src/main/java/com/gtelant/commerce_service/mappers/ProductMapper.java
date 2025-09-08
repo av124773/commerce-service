@@ -62,4 +62,39 @@ public class ProductMapper {
 
         return dto;
     }
+
+    public Product updateEntity(Product product, ProductRequest request) {
+        if (request.getReference() != null) {
+            product.setReference(request.getReference());
+        }
+        if (request.getWidth() != product.getWidth()) {
+            product.setWidth(request.getWidth());
+        }
+        if (request.getHeight() != product.getHeight()) {
+            product.setHeight(request.getHeight());
+        }
+        if (request.getPrice() != null) {
+            product.setPrice(request.getPrice());
+        }
+        if (request.getStock() != product.getStock()) {
+            product.setStock(request.getStock());
+        }
+        if (request.getDescription() != null) {
+            product.setDescription(request.getDescription());
+        }
+        if (request.getImageUrl() != null) {
+            product.setImageUrl(request.getImageUrl());
+        }
+        if (request.getThumbnailUrl() != null) {
+            product.setThumbnailUrl(request.getThumbnailUrl());
+        }
+        if (request.getLastUpdateAt() != null) {
+            product.setLastUpdateAt(request.getLastUpdateAt());
+        }
+        if (request.getCategoryId() != product.getCategory().getId()) {
+            Optional<Category> category = categoryService.getCategoryById(request.getCategoryId());
+            category.ifPresent(product::setCategory);
+        }
+        return product;
+    }
 }
