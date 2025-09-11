@@ -1,5 +1,6 @@
 package com.gtelant.commerce_service.mappers;
 
+import com.gtelant.commerce_service.dtos.CategoryProductResponse;
 import com.gtelant.commerce_service.dtos.CategoryResponse;
 import com.gtelant.commerce_service.dtos.ProductRequest;
 import com.gtelant.commerce_service.dtos.ProductResponse;
@@ -96,5 +97,12 @@ public class ProductMapper {
             category.ifPresent(product::setCategory);
         }
         return product;
+    }
+
+    public CategoryProductResponse toCategoryProductResponse(Product product) {
+        CategoryProductResponse dto = new CategoryProductResponse();
+        dto.setId(product.getId());
+        dto.setReference(product.getReference());
+        return dto;
     }
 }

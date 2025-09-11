@@ -1,8 +1,10 @@
 package com.gtelant.commerce_service.controllers;
 
+import com.gtelant.commerce_service.dtos.CategoryProductResponse;
 import com.gtelant.commerce_service.dtos.CategoryRequest;
 import com.gtelant.commerce_service.dtos.CategoryResponse;
 import com.gtelant.commerce_service.mappers.CategoryMapper;
+import com.gtelant.commerce_service.mappers.ProductMapper;
 import com.gtelant.commerce_service.models.Category;
 import com.gtelant.commerce_service.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,20 +21,30 @@ public class CategoryContorller {
 
     private final CategoryService categoryService;
     private final CategoryMapper categoryMapper;
+    private final ProductMapper productMapper;
 
     @Autowired
-    public CategoryContorller(CategoryService categoryService, CategoryMapper categoryMapper) {
+    public CategoryContorller(CategoryService categoryService, CategoryMapper categoryMapper, ProductMapper productMapper) {
         this.categoryService = categoryService;
         this.categoryMapper = categoryMapper;
+        this.productMapper = productMapper;
     }
 
     @Operation(summary = "取得所有Categories列表", description = "")
     @GetMapping
     public ResponseEntity<List<CategoryResponse>> getAllCategories() {
-        return ResponseEntity.ok(categoryService.getAllCategories().stream()
-                .map(categoryMapper::toResponse)
-                .toList()
-        );
+        List<CategoryResponse> responses = categoryService.getAllCategories().stream()
+                .map(category -> {
+                    CategoryResponse response = categoryMapper.toResponse(category);
+                    List<CategoryProductResponse> productResponseList = category
+                            .getProducts()
+                            .stream()
+                            .map(productMapper::toCategoryProductResponse)
+                            .toList();
+                    response.setProductList(productResponseList);
+                    return response;
+                }).toList();
+        return ResponseEntity.ok(responses);
     }
 
     @Operation(summary = "建立新的Category", description = "")
