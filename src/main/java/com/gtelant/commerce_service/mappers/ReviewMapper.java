@@ -32,10 +32,11 @@ public class ReviewMapper {
         dto.setRating(review.getRating());
         dto.setComment(review.getComment());
         dto.setProductId(review.getProduct().getId());
-        if (review.getUser() != null) {
-            dto.setUserId(review.getUser().getId());
-        }
+        dto.setProductName(review.getProduct().getReference());
+        dto.setUserId(review.getUser().getId());
+        dto.setUserName(review.getUser().getFirstName() + " " + review.getUser().getLastName());
         dto.setStatusId(review.getStatus().getId());
+        dto.setStatusName(review.getStatus().getName());
         dto.setCreatedAt(review.getCreatedAt());
         dto.setDeletedAt(review.getDeletedAt());
         return dto;

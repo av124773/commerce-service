@@ -10,8 +10,11 @@ public class ReviewResponse {
     private int rating;
     private String comment;
     private int userId;
+    private String userName;
     private int productId;
+    private String productName;
     private int statusId;
+    private String statusName;
     private LocalDateTime createdAt;
     private LocalDateTime deletedAt;
 }

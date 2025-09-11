@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -89,4 +90,14 @@ public class ReviewContorller {
         return ResponseEntity.notFound().build();
     }
 
+    @Operation(summary = "刪除指定的Review", description = "")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteReview(@PathVariable int id) {
+        Optional<Review> review = reviewService.getReviewById(id);
+        if (review.isPresent()) {
+            reviewService.deleteReview(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
