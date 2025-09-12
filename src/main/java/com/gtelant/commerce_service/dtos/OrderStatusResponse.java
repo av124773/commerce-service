@@ -8,5 +8,4 @@ import lombok.Data;
 public class OrderStatusResponse {
     private int id;
     private String name;
-    private LocalDateTime createdAt;
 }
