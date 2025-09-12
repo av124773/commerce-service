@@ -26,12 +26,12 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Page<Product> getAllProducts(String queryName, Integer categoryId, Integer stock, Integer sales, PageRequest pageRequest) {
-        Specification<Product> spec = productSpecification(queryName, categoryId, stock, sales);
+    public Page<Product> getAllProducts(String queryName, Integer categoryId, Integer stockFrom, Integer stockTo, Integer sales, PageRequest pageRequest) {
+        Specification<Product> spec = productSpecification(queryName, categoryId, stockFrom, stockTo, sales);
         return productRepository.findAll(spec, pageRequest);
     }
 
-    private Specification<Product> productSpecification(String queryName, Integer categoryId, Integer stock, Integer sales) {
+    private Specification<Product> productSpecification(String queryName, Integer categoryId, Integer stockFrom, Integer stockTo, Integer sales) {
         return ((root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             
@@ -49,22 +49,11 @@ public class ProductService {
                 );
             }
 
-            if (stock != null) {
-                if (stock == 0) {
-                    predicates.add(criteriaBuilder.equal(root.get("stock"), 0));
-                } else if (stock == 1) {
-                    predicates.add(criteriaBuilder.and(
-                        criteriaBuilder.greaterThanOrEqualTo(root.get("stock"), 1),
-                        criteriaBuilder.lessThanOrEqualTo(root.get("stock"), 9)
+            if (stockFrom != null && stockTo != null) {
+                predicates.add(criteriaBuilder.and(
+                        criteriaBuilder.greaterThanOrEqualTo(root.get("stock"), stockFrom),
+                        criteriaBuilder.lessThanOrEqualTo(root.get("stock"), stockTo)
                     ));
-                } else if (stock == 2) {
-                    predicates.add(criteriaBuilder.and(
-                        criteriaBuilder.greaterThanOrEqualTo(root.get("stock"), 10),
-                        criteriaBuilder.lessThanOrEqualTo(root.get("stock"), 49)
-                    ));
-                } else if (stock == 3) {
-                    predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("stock"), 50));
-                }
             }
 
             if (sales != null) {
