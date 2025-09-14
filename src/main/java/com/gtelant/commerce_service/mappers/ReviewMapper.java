@@ -2,6 +2,7 @@ package com.gtelant.commerce_service.mappers;
 
 import java.util.Optional;
 
+import com.gtelant.commerce_service.dtos.ReviewStatusRequest;
 import org.springframework.stereotype.Component;
 
 import com.gtelant.commerce_service.dtos.ReviewRequest;
@@ -74,6 +75,12 @@ public class ReviewMapper {
         if (status.isPresent()) {
             review.setStatus(status.get());
         }
+        return review;
+    }
+
+    public Review updateStatus(Review review, ReviewStatusRequest request) {
+        Optional<Status> status = statusService.getStatusById(request.getStatusId());
+        status.ifPresent(review::setStatus);
         return review;
     }
 }
