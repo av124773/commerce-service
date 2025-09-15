@@ -43,11 +43,8 @@ public class ProductConrotller {
                     - size: 每一頁最多幾筆資料。
                     - queryName: 搜尋產品關鍵字。
                     - categoryId: 產品的分類編號。
-                    - stock: 產品庫存狀態編號。
-                      - 0: 無庫存。
-                      - 1: 庫存量 1~9。
-                      - 2: 庫存量 10~49。
-                      - 3: 庫存量 50 以上。
+                    - stockFrom: 庫存量下限。
+                    - stockTo: 庫存量上限。
                     - sales: 產品銷量狀態編號。
                       - 0: 無銷量。
                       - 1: 低銷量 1~99。
@@ -60,11 +57,12 @@ public class ProductConrotller {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "") String queryName,
             @RequestParam(required = false) Integer categoryId,
-            @RequestParam(required = false) Integer stock,
+            @RequestParam(required = false) Integer stockFrom,
+            @RequestParam(required = false) Integer stockTo,
             @RequestParam(required = false) Integer sales
     ) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        return productService.getAllProducts(queryName, categoryId, stock, sales, pageRequest).map(productMapper::toResponse);
+        return productService.getAllProducts(queryName, categoryId, stockFrom, stockTo, sales, pageRequest).map(productMapper::toResponse);
     }
 
     @Operation(summary = "取得指定Product", description = "")

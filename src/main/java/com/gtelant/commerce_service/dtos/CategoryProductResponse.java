@@ -3,7 +3,7 @@ package com.gtelant.commerce_service.dtos;
 import lombok.Data;
 
 @Data
-public class OrderStatusResponse {
+public class CategoryProductResponse {
     private int id;
-    private String name;
+    private String reference;
 }

@@ -1,9 +1,11 @@
 package com.gtelant.commerce_service.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.catalina.connector.Response;
+import com.gtelant.commerce_service.dtos.ReviewStatusRequest;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -88,6 +90,23 @@ public class ReviewContorller {
             return ResponseEntity.ok(reviewMapper.toResponse(savedReview));
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "更新指定Review的status", description = "")
+    @PutMapping("/status")
+    public ResponseEntity<ReviewResponse> updateStatus(@RequestBody ReviewStatusRequest request) {
+        List<Review> reviews = reviewService.getReviewByIds(request.getIds());
+        if (reviews.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        List<Review> updatedReviews = new ArrayList<>();
+        for (Review review : reviews) {
+            review.setStatus(request.getReviewStatus());
+            updatedReviews.add(review);
+        }
+        reviewService.saveAllReviews(updatedReviews);
+        return ResponseEntity.ok(null);
+        
     }
 
     @Operation(summary = "刪除指定的Review", description = "")

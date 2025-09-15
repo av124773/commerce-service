@@ -66,8 +66,16 @@ public class ReviewService {
         return reviewRepository.findById(id);
     }
 
+    public List<Review> getReviewByIds(List<Integer> ids) {
+        return reviewRepository.findAllById(ids);
+    }
+
     public Review saveReview(Review review) {
         return reviewRepository.save(review);
+    }
+
+    public List<Review> saveAllReviews(List<Review> review) {
+        return reviewRepository.saveAll(review);
     }
 
     public void deleteReview(int id) {
