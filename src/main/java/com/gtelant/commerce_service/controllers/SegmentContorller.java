@@ -3,7 +3,6 @@ package com.gtelant.commerce_service.controllers;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,7 +29,6 @@ public class SegmentContorller {
     private final SegmentService segmentService;
     private final SegmentMapper segmentMapper;
 
-    @Autowired
     public SegmentContorller(SegmentService segmentService, SegmentMapper segmentMapper) {
         this.segmentService = segmentService;
         this.segmentMapper = segmentMapper;

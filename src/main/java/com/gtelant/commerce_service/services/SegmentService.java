@@ -3,7 +3,6 @@ package com.gtelant.commerce_service.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gtelant.commerce_service.models.Segment;
@@ -14,7 +13,6 @@ public class SegmentService {
 
     private final SegmentRepository segmentRepository;
 
-    @Autowired
     public SegmentService(SegmentRepository segmentRepository) {
         this.segmentRepository = segmentRepository;
     }

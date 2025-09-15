@@ -8,7 +8,6 @@ import com.gtelant.commerce_service.mappers.ProductMapper;
 import com.gtelant.commerce_service.models.Category;
 import com.gtelant.commerce_service.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +22,6 @@ public class CategoryContorller {
     private final CategoryMapper categoryMapper;
     private final ProductMapper productMapper;
 
-    @Autowired
     public CategoryContorller(CategoryService categoryService, CategoryMapper categoryMapper, ProductMapper productMapper) {
         this.categoryService = categoryService;
         this.categoryMapper = categoryMapper;
