@@ -3,6 +3,7 @@ package com.gtelant.commerce_service.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import com.gtelant.commerce_service.dtos.ReviewStatusRequest;
 import org.apache.catalina.connector.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -87,6 +88,16 @@ public class ReviewContorller {
             Review savedReview = reviewService.saveReview(reviewMapper.updateEntity(review.get(), request));
             return ResponseEntity.ok(reviewMapper.toResponse(savedReview));
         }
+        return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "更新指定Review的status", description = "")
+    @PutMapping("/status")
+    public ResponseEntity<ReviewResponse> updateStatus(@RequestBody ReviewStatusRequest request) {
+        // todo
+//        Review review = reviewService.getReviewById(request.getIds());
+//        Review savedReview = reviewService.saveReview(reviewMapper.updateStatus(review, request));
+//        return ResponseEntity.ok(reviewMapper.toResponse(savedReview));
         return ResponseEntity.notFound().build();
     }
 
