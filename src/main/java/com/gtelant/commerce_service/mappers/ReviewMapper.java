@@ -2,29 +2,26 @@ package com.gtelant.commerce_service.mappers;
 
 import java.util.Optional;
 
-import com.gtelant.commerce_service.dtos.ReviewStatusRequest;
+import com.gtelant.commerce_service.enums.ReviewStatus;
+
 import org.springframework.stereotype.Component;
 
 import com.gtelant.commerce_service.dtos.ReviewRequest;
 import com.gtelant.commerce_service.dtos.ReviewResponse;
 import com.gtelant.commerce_service.models.Product;
 import com.gtelant.commerce_service.models.Review;
-import com.gtelant.commerce_service.models.Status;
 import com.gtelant.commerce_service.models.User;
 import com.gtelant.commerce_service.services.ProductService;
-import com.gtelant.commerce_service.services.StatusService;
 import com.gtelant.commerce_service.services.UserService;
 
 @Component
 public class ReviewMapper {
     private final UserService userService;
     private final ProductService productService;
-    private final StatusService statusService;
 
-    public ReviewMapper(UserService userService, ProductService productService, StatusService statusService) {
+    public ReviewMapper(UserService userService, ProductService productService) {
         this.userService = userService;
         this.productService = productService;
-        this.statusService = statusService;
     }
 
     public ReviewResponse toResponse(Review review) {
@@ -36,8 +33,7 @@ public class ReviewMapper {
         dto.setProductName(review.getProduct().getReference());
         dto.setUserId(review.getUser().getId());
         dto.setUserName(review.getUser().getFirstName() + " " + review.getUser().getLastName());
-        dto.setStatusId(review.getStatus().getId());
-        dto.setStatusName(review.getStatus().getName());
+        dto.setStatus(review.getStatus());
         dto.setCreatedAt(review.getCreatedAt());
         dto.setDeletedAt(review.getDeletedAt());
         return dto;
@@ -47,6 +43,7 @@ public class ReviewMapper {
         Review dto = new Review();
         dto.setRating(request.getRating());
         dto.setComment(request.getComment());
+        dto.setStatus(ReviewStatus.PENDING);
 
         Optional<User> user = userService.getUserById(request.getUserId());
         if (user.isPresent()) {
@@ -55,10 +52,6 @@ public class ReviewMapper {
         Optional<Product> product = productService.getProductById(request.getProductId());
         if (product.isPresent()) {
             dto.setProduct(product.get());
-        }
-        Optional<Status> status = statusService.getStatusById(request.getStatusId());
-        if (status.isPresent()) {
-            dto.setStatus(status.get());
         }
         return dto;
     }
@@ -71,16 +64,7 @@ public class ReviewMapper {
         if (request.getComment() != null){
             review.setComment(request.getComment());
         }
-        Optional<Status> status = statusService.getStatusById(request.getStatusId());
-        if (status.isPresent()) {
-            review.setStatus(status.get());
-        }
         return review;
     }
 
-    public Review updateStatus(Review review, ReviewStatusRequest request) {
-        Optional<Status> status = statusService.getStatusById(request.getStatusId());
-        status.ifPresent(review::setStatus);
-        return review;
-    }
 }
