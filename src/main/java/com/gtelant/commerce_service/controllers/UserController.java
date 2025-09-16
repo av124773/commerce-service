@@ -3,6 +3,7 @@ package com.gtelant.commerce_service.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +48,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "取得所有使用者列表(分頁)", description = "")
+    @Operation(summary = "取得所有使用者列表(分頁)", description = "", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/page")
     public Page<UserResponse> getAllUsersPage(
             @RequestParam(defaultValue = "0") int page,

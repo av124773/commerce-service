@@ -48,7 +48,7 @@ public class User {
     private LocalDateTime createdAt;
     @Column(name = "deleted_at")
     private LocalDateTime deleteAt;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<UserSegment> userSegments;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Review> reviews;
