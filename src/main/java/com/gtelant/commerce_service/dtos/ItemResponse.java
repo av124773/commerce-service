@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ItemResponse {
     private int id;
-    private int orderId;
+    private String orderReference;
     private int productId;
     private String productName;
     private int amount;

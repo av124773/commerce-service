@@ -6,7 +6,6 @@ import com.gtelant.commerce_service.mappers.ProductMapper;
 import com.gtelant.commerce_service.models.Product;
 import com.gtelant.commerce_service.services.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +19,7 @@ import java.util.Optional;
 public class ProductConrotller {
     private final ProductService productService;
     private final ProductMapper productMapper;
-
-    @Autowired
+    
     public ProductConrotller(ProductService productService, ProductMapper productMapper) {
         this.productService = productService;
         this.productMapper = productMapper;
