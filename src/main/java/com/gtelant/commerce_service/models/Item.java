@@ -24,9 +24,12 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "order_id", nullable = false)
+    // private Order order;
+    @Column(name = "order_reference", nullable = false)
+    private String orderReference;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;

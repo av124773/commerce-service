@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.gtelant.commerce_service.enums.OrderStatus;
+
 import lombok.Data;
 
 @Data
@@ -11,7 +13,7 @@ public class OrderResponse {
     private int id;
     private String reference;
     private UserResponse user;
-    private OrderStatusResponse orderStatus;
+    private OrderStatus status;
     private String shippingAddress;
     private BigDecimal delivery;
     private BigDecimal tax;

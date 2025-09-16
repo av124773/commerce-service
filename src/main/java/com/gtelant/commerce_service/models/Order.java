@@ -6,9 +6,13 @@ import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.gtelant.commerce_service.enums.OrderStatus;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,9 +36,10 @@ public class Order {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_status_id")
-    private OrderStatus orderStatus;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private OrderStatus status;
 
     @Column(name = "shipping_address", nullable = false)
     private String shippingAddress;
@@ -49,6 +54,6 @@ public class Order {
     private LocalDateTime createdAt;
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Item> items;
+    // @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // private List<Item> items;
 }
