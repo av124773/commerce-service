@@ -6,6 +6,8 @@ import com.gtelant.commerce_service.mappers.ProductMapper;
 import com.gtelant.commerce_service.models.Product;
 import com.gtelant.commerce_service.services.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/products")
+@CrossOrigin("*")
+@SecurityRequirement(name = "bearerAuth")
 public class ProductConrotller {
     private final ProductService productService;
     private final ProductMapper productMapper;

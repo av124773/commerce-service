@@ -21,10 +21,12 @@ import com.gtelant.commerce_service.models.Segment;
 import com.gtelant.commerce_service.services.SegmentService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping("/segments")
 @CrossOrigin("*")
+@SecurityRequirement(name = "bearerAuth")
 public class SegmentContorller {
     private final SegmentService segmentService;
     private final SegmentMapper segmentMapper;

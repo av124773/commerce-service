@@ -29,6 +29,7 @@ import io.swagger.v3.oas.annotations.Operation;
 @RestController
 @RequestMapping("/users")
 @CrossOrigin("*")
+@SecurityRequirement(name = "bearerAuth")
 public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
@@ -48,7 +49,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "取得所有使用者列表(分頁)", description = "", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "取得所有使用者列表(分頁)", description = "")
     @GetMapping("/page")
     public Page<UserResponse> getAllUsersPage(
             @RequestParam(defaultValue = "0") int page,

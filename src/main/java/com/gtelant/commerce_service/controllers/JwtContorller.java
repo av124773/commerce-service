@@ -6,7 +6,6 @@ import com.gtelant.commerce_service.dtos.UserRequest;
 import com.gtelant.commerce_service.mappers.UserMapper;
 import com.gtelant.commerce_service.models.User;
 import com.gtelant.commerce_service.services.JwtAuthService;
-import com.gtelant.commerce_service.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 public class JwtContorller {
     @Autowired
     private UserMapper userMapper;
-    @Autowired
-    private UserService userService;
     @Autowired
     private JwtAuthService jwtAuthService;
 

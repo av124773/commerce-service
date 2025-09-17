@@ -1,6 +1,5 @@
 package com.gtelant.commerce_service.configs;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,7 +17,6 @@ public class SecurityConfig {
     // 定義安全性設定檔 (那些urls需要被保護)
     private final JwtAuthFilter jwtAuthFilter;
 
-    @Autowired
     public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
         this.jwtAuthFilter = jwtAuthFilter;
     }

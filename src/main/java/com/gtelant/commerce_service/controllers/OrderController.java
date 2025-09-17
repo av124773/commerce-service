@@ -19,6 +19,8 @@ import com.gtelant.commerce_service.services.ItemService;
 import com.gtelant.commerce_service.services.OrderService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/orders")
 @CrossOrigin("*")
+@SecurityRequirement(name = "bearerAuth")
 public class OrderController {
     private final OrderService orderService;
     private final OrderMapper orderMapper;

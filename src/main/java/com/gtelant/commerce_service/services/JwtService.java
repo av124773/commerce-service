@@ -1,7 +1,6 @@
 package com.gtelant.commerce_service.services;
 
 import com.gtelant.commerce_service.models.User;
-import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
