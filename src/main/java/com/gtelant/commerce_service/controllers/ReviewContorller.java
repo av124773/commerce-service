@@ -25,6 +25,8 @@ import com.gtelant.commerce_service.models.Review;
 import com.gtelant.commerce_service.services.ReviewService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -32,6 +34,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RestController
 @RequestMapping("/reviews")
 @CrossOrigin("*")
+@SecurityRequirement(name = "bearerAuth")
 public class ReviewContorller {
     private final ReviewService reviewService;
     private final ReviewMapper reviewMapper;

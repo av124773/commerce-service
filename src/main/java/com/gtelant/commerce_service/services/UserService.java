@@ -34,12 +34,12 @@ public class UserService {
         return userRepository.findAll();
     }
     
-    public Page<User> getAllUsers(String queryName, PageRequest pageRequest) {
-        if (queryName != null && !queryName.isEmpty()) {
-            return userRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(queryName, queryName, pageRequest);
-        }
-        return userRepository.findAll(pageRequest);
-    }
+//    public Page<User> getAllUsers(String queryName, PageRequest pageRequest) {
+//        if (queryName != null && !queryName.isEmpty()) {
+//            return userRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(queryName, queryName, pageRequest);
+//        }
+//        return userRepository.findAll(pageRequest);
+//    }
     
     public Page<User> getAllUsers(String queryName, Boolean hasNewsletter, Integer segmentId, PageRequest pageRequest) {
         Specification<User> spec = userSpecification(queryName, hasNewsletter, segmentId);

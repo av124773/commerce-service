@@ -3,6 +3,7 @@ package com.gtelant.commerce_service.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ import io.swagger.v3.oas.annotations.Operation;
 @RestController
 @RequestMapping("/users")
 @CrossOrigin("*")
+@SecurityRequirement(name = "bearerAuth")
 public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;

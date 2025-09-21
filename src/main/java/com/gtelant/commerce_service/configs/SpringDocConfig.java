@@ -39,7 +39,8 @@ public class SpringDocConfig {
                         "/categories/**",
                         "/products/**",
                         "/reviews/**",
-                        "/orders/**"
+                        "/orders/**",
+                        "/jwt/**"
                 )
                 .build();
     }

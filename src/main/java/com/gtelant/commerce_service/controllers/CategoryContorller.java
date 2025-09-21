@@ -8,6 +8,8 @@ import com.gtelant.commerce_service.mappers.ProductMapper;
 import com.gtelant.commerce_service.models.Category;
 import com.gtelant.commerce_service.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/categories")
+@CrossOrigin("*")
+@SecurityRequirement(name = "bearerAuth")
 public class CategoryContorller {
 
     private final CategoryService categoryService;

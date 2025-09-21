@@ -68,17 +68,6 @@ public class OrderMapper {
         return dto;
     }
 
-    /*
-    private String reference;
-    private UserResponse user;
-    private OrderStatus status;
-    private String shippingAddress;
-    private BigDecimal delivery;
-    private BigDecimal tax;
-    private boolean isReturned;
-    private List<ItemRequest> items;
-     */
-
     public Order toEntity(OrderRequest request) {
         Order dto = new Order();
         dto.setStatus(OrderStatus.NULL); // Default status
